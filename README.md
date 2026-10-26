@@ -1,4 +1,6 @@
 # Install
+本机双臂共用一路 CAN 的主从示教、采集命令与实测结果：[piper_scripts/README-local.md](piper_scripts/README-local.md)。
+
 Create a virtual environment with Python 3.10 and activate it, e.g. with [`miniconda`](https://docs.anaconda.com/free/miniconda/index.html):
 ```bash
 conda create -y -n lerobot python=3.10

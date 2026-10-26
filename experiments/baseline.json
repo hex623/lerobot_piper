@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-10-26",
+  "status": "development_baseline_not_full_acceptance",
+  "branch": "piper-base",
+  "fixed_git_ref": "baseline-shared-can-2026-10-26",
+  "upstream": {
+    "url": "https://github.com/brucecai-2001/lerobot_piper.git",
+    "branch": "piper",
+    "commit": "06ce135cca3c583bc17a1ea2e972c6a78339736f"
+  },
+  "hardware_profile": "piper_scripts/local-hardware.json",
+  "environment_constraints": "piper_scripts/constraints-local.txt",
+  "installed_packages_snapshot": "piper_scripts/requirements-installed.txt",
+  "validation": {
+    "targeted_unit_tests": {"passed": 21, "uses_synthetic_can_and_mocks": true},
+    "hardware_observations_and_camera_images": "verified",
+    "native_master_control_messages": "observed",
+    "dataset_connectivity_check": {
+      "frames": 90,
+      "episodes": 1,
+      "uses_observed_history_for_initial_targets": true,
+      "readback_checked_frame_indices": [0, 45, 89],
+      "interface_tx_packets_delta": 0,
+      "training_eligible": false,
+      "capture_report": "validation/baseline-20261026/capture-report.json",
+      "readback_report": "validation/baseline-20261026/readback.json"
+    },
+    "full_realtime_task_at_final_10hz_entry": "not_verified",
+    "long_running_and_hardware_fault_recovery": "not_verified",
+    "full_training_and_resume": "not_verified",
+    "autonomous_robot_execution": "not_verified",
+    "upstream_full_test_suite": "not_run"
+  },
+  "artifact_policy": "Track small manifests and reports; datasets, videos and checkpoints remain outside Git under data/ or outputs/."
+}

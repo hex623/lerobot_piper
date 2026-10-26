@@ -25,7 +25,7 @@ class OpenCVCameraConfig(CameraConfig):
     ```
     """
 
-    camera_index: int
+    camera_index: int | str
     fps: int | None = None
     width: int | None = None
     height: int | None = None
@@ -33,8 +33,11 @@ class OpenCVCameraConfig(CameraConfig):
     channels: int | None = None
     rotation: int | None = None
     mock: bool = False
+    fourcc: str | None = None
 
     def __post_init__(self):
+        if self.fourcc is not None and len(self.fourcc) != 4:
+            raise ValueError("fourcc must have four characters, e.g. MJPG or YUYV")
         if self.color_mode not in ["rgb", "bgr"]:
             raise ValueError(
                 f"`color_mode` is expected to be 'rgb' or 'bgr', but {self.color_mode} is provided."

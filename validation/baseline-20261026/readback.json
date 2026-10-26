@@ -1,0 +1,18 @@
+{
+  "readback_passed": true,
+  "episodes": 1,
+  "frames": 90,
+  "checked_frames": [
+    0,
+    45,
+    89
+  ],
+  "first_frame_actual_elapsed_s": 0.005884260055609047,
+  "mean_frame_interval_s": 0.03327637966303678,
+  "max_frame_interval_s": 0.2914779670536518,
+  "min_frame_interval_s": 0.00043250410817563534,
+  "unique_camera_receipts": {
+    "head": 82,
+    "hand": 36
+  }
+}

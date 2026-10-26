@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-26T06:23:30.928500+00:00",
+  "topology": "native_master_slave_shared_can",
+  "program_can_transmit_calls": 0,
+  "task": "Connectivity check only - not a task demonstration",
+  "task_outcome": "not_assessed",
+  "training_eligible": false,
+  "review_status": "unreviewed",
+  "frames": 90,
+  "action_units": [
+    "rad",
+    "rad",
+    "rad",
+    "rad",
+    "rad",
+    "rad",
+    "m"
+  ],
+  "action_source": "observed_bus_joint_and_gripper_control",
+  "clock": "dataset uses nominal frame_index/fps; provenance contains actual host monotonic times",
+  "connectivity_check_with_history": true,
+  "history_command_frames": 2294,
+  "actual_capture_elapsed_s": 3.003073881031014,
+  "saved_episodes": 1,
+  "dataset_root": "/mnt/c/Users/heexu/Documents/Codex/2026-10-26/https-github-com-brucecai-2001-lerobot/lerobot_piper/outputs/shared-can-smoketest-v2/dataset",
+  "passed": true,
+  "bus_diagnostics": {
+    "frame_counts": {
+      "0x151": 7,
+      "0x155": 1081,
+      "0x156": 850,
+      "0x157": 278,
+      "0x159": 78
+    },
+    "joint_target_updates": 2207,
+    "has_gripper_command": true,
+    "known_joint_pairs": 3
+  },
+  "interface_tx_packets_delta": 0
+}

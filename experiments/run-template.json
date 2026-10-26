@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "task_id": null,
+  "run_id": null,
+  "status": "template_not_a_training_run",
+  "git": {
+    "branch": null,
+    "commit": null,
+    "dirty": null,
+    "baseline_ref": "baseline-shared-can-2026-10-26"
+  },
+  "dataset": {
+    "repo_id": null,
+    "root_or_uri": null,
+    "version_or_fingerprint": null,
+    "split_manifest": null,
+    "reviewed_for_training": false
+  },
+  "training": {
+    "config_file": null,
+    "seed": null,
+    "environment_snapshot": null,
+    "device": null,
+    "output_directory": null
+  },
+  "checkpoints": {"last": null, "best": null},
+  "evaluation": {
+    "protocol_or_config": null,
+    "metrics": {},
+    "successful_episodes": null,
+    "total_episodes": null,
+    "reviewed": false
+  },
+  "notes": "Fill with actual values for each run; a branch alone does not version ignored data, model weights or the runtime environment."
+}

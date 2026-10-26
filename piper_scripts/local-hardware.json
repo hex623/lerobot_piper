@@ -1,0 +1,18 @@
+{
+  "can_name": "can0",
+  "bitrate": 1000000,
+  "adapter_serial": "001C00274648570A20303731",
+  "shared_can_teaching": true,
+  "leader_control_offset": 0,
+  "follower_feedback_offset": 0,
+  "cameras": {
+    "head": {
+      "device": "/dev/v4l/by-id/usb-Intel_R__RealSense_TM__Depth_Camera_455f_Intel_R__RealSense_TM__Depth_Camera_455f-video-index0",
+      "fourcc": "YUYV"
+    },
+    "hand": {
+      "device": "/dev/v4l/by-id/usb-Sonix_Technology_Co.__Ltd._Dabai_DC1_CC1N16203J3-video-index0",
+      "fourcc": "MJPG"
+    }
+  }
+}

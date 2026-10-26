@@ -29,11 +29,8 @@ class PiperRobot:
         self.piper_motors = make_motors_buses_from_configs(self.config.follower_arm)
         self.arm = self.piper_motors['main']
         
-        # build gamepad teleop
-        if not self.inference_time:
-            self.teleop = SixAxisArmController()
-        else:
-            self.teleop = None
+        # Open hardware only in connect(); a read-only session needs no gamepad.
+        self.teleop = None
         
         self.logs = {}
         self.is_connected = False
@@ -84,39 +81,29 @@ class PiperRobot:
                 "Piper is already connected. Do not run `robot.connect()` twice."
             )
         
-        # connect piper
-        self.arm.connect(enable=True)
-        print("piper conneted")
-
-        # connect cameras
-        for name in self.cameras:
-            self.cameras[name].connect()
-            self.is_connected = self.is_connected and self.cameras[name].is_connected
-            print(f"camera {name} conneted")
-        
-        print("All connected")
-        self.is_connected = True
-        
-        self.run_calibration()
+        try:
+            self.arm.connect(enable=self.arm.config.allow_motion)
+            for camera in self.cameras.values():
+                camera.connect()
+            if not self.inference_time and not self.arm.config.shared_can_teaching:
+                if not self.arm.config.allow_motion:
+                    raise PermissionError("Gamepad teleoperation requires explicit allow_motion=true")
+                self.teleop = SixAxisArmController(initial_state=list(self.arm.read().values()))
+            self.is_connected = True
+        except BaseException:
+            self.disconnect()
+            raise
 
 
     def disconnect(self) -> None:
-        """move to home position, disenable piper and cameras"""
-        # move piper to home position, disable
-        if not self.inference_time:
+        """Close devices without homing or changing motor enable state."""
+        if self.teleop is not None:
             self.teleop.stop()
-
-        # disconnect piper
+            self.teleop = None
         self.arm.safe_disconnect()
-        print("piper disable after 5 seconds")
-        time.sleep(5)
-        self.arm.connect(enable=False)
-
-        # disconnect cameras
-        if len(self.cameras) > 0:
-            for cam in self.cameras.values():
+        for cam in self.cameras.values():
+            if cam.is_connected:
                 cam.disconnect()
-
         self.is_connected = False
 
 
@@ -125,9 +112,7 @@ class PiperRobot:
         if not self.is_connected:
             raise ConnectionError()
         
-        self.arm.apply_calibration()
-        if not self.inference_time:
-            self.teleop.reset()
+        raise RuntimeError("Automatic Piper homing is disabled; use explicit manufacturer calibration")
 
 
 
@@ -137,8 +122,24 @@ class PiperRobot:
         if not self.is_connected:
             raise ConnectionError()
         
-        if self.teleop is None and self.inference_time:
-            self.teleop = SixAxisArmController()
+        if self.arm.config.shared_can_teaching:
+            started = time.monotonic()
+            target, provenance = self.arm.read_shared_action()
+            observation = self.capture_observation()
+            provenance.update(observation_started_monotonic_s=started,
+                              observation_finished_monotonic_s=time.monotonic())
+            provenance["camera_receipt_monotonic_s"] = {
+                name: camera.logs.get("capture_monotonic_s") for name, camera in self.cameras.items()}
+            now = time.monotonic()
+            if any(t is None or now - t > .5 for t in provenance["camera_receipt_monotonic_s"].values()):
+                raise RuntimeError("Camera feedback is stale during shared CAN teaching")
+            self.logs["shared_can_action"] = provenance
+            if record_data:
+                return observation, {"action": torch.tensor(target, dtype=torch.float32)}
+            return None
+
+        if self.teleop is None:
+            raise RuntimeError("No gamepad session; connect with inference_time=false and allow_motion=true")
 
         # read target pose state as 
         before_read_t = time.perf_counter()
@@ -224,12 +225,11 @@ class PiperRobot:
         return obs_dict
     
     def teleop_safety_stop(self):
-        """ move to home position after record one episode """
-        self.run_calibration()
+        """Keep the current pose; episode boundaries must never auto-home."""
+        if self.arm.config.allow_motion:
+            self.arm.write(list(self.arm.read().values()))
 
     
     def __del__(self):
-        if self.is_connected:
+        if getattr(self, "is_connected", False):
             self.disconnect()
-            if not self.inference_time:
-                self.teleop.stop()

@@ -33,8 +33,11 @@ def make_motors_buses_from_configs(motors_bus_configs: dict[str, MotorsBusConfig
 
         elif cfg.type == "piper":
             from lerobot.common.robot_devices.motors.piper import PiperMotorsBus
-
-            motors_buses[key] = PiperMotorsBus(cfg)
+            if cfg.shared_can_teaching:
+                from lerobot.common.robot_devices.motors.piper_shared import SharedCANPiperBus
+                motors_buses[key] = SharedCANPiperBus(cfg)
+            else:
+                motors_buses[key] = PiperMotorsBus(cfg)
 
         else:
             raise ValueError(f"The motor type '{cfg.type}' is not valid.")
@@ -59,6 +62,9 @@ def make_motors_bus(motor_type: str, **kwargs) -> MotorsBus:
         from lerobot.common.robot_devices.motors.piper import PiperMotorsBus
 
         config = PiperMotorsBusConfig(**kwargs)
+        if config.shared_can_teaching:
+            from lerobot.common.robot_devices.motors.piper_shared import SharedCANPiperBus
+            return SharedCANPiperBus(config)
         return PiperMotorsBus(config)
 
     else:

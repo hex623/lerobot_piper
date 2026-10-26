@@ -1,0 +1,15 @@
+# Python 3.11 / legacy LeRobot Piper branch. CPU PyTorch installed separately.
+numpy==1.26.4
+opencv-python==4.10.0.84
+torch==2.6.0
+torchvision==0.21.0
+datasets==3.6.0
+pyarrow==19.0.1
+pandas==2.2.3
+huggingface-hub==0.29.3
+diffusers==0.32.2
+draccus==0.10.0
+av==14.2.0
+zarr==2.18.7
+rerun-sdk==0.21.0
+numba==0.61.2

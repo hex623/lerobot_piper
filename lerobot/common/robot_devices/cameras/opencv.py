@@ -298,6 +298,8 @@ class OpenCVCamera:
         # Note: For some unknown reason, calling `isOpened` blocks the camera which then
         # needs to be re-created.
         self.camera = cv2.VideoCapture(camera_idx)
+        if self.config.fourcc is not None:
+            self.camera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*self.config.fourcc))
 
         if self.fps is not None:
             self.camera.set(cv2.CAP_PROP_FPS, self.fps)
@@ -382,6 +384,7 @@ class OpenCVCamera:
 
         # log the utc time at which the image was received
         self.logs["timestamp_utc"] = capture_timestamp_utc()
+        self.logs["capture_monotonic_s"] = time.monotonic()
 
         self.color_image = color_image
 

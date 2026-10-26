@@ -4,7 +4,7 @@ import time
 from typing import Dict
 
 class SixAxisArmController:
-    def __init__(self):
+    def __init__(self, initial_state=None):
         # 初始化pygame和手柄
         pygame.init()
         pygame.joystick.init()
@@ -18,8 +18,9 @@ class SixAxisArmController:
         self.joystick.init()
         
         # 初始化关节和夹爪状态
-        self.joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # 6个关节
-        self.gripper = 0.0  # 夹爪状态
+        initial_state = initial_state if initial_state is not None else [0.0] * 7
+        self.joints = list(initial_state[:6])
+        self.gripper = initial_state[6]
         self.speeds = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # 6个关节的速度
         self.gripper_speed = 0.0  # 夹爪速度
         

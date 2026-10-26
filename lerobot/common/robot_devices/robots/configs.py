@@ -603,7 +603,7 @@ class LeKiwiRobotConfig(RobotConfig):
 @RobotConfig.register_subclass("piper")
 @dataclass
 class PiperRobotConfig(RobotConfig):
-    inference_time: bool
+    inference_time: bool = True
     
     follower_arm: dict[str, MotorsBusConfig] = field(
         default_factory=lambda: {

@@ -32,3 +32,11 @@ class FeetechMotorsBusConfig(MotorsBusConfig):
 class PiperMotorsBusConfig(MotorsBusConfig):
     can_name: str
     motors: dict[str, tuple[int, str]]
+    allow_motion: bool = False
+    allow_gripper: bool = False
+    speed_percent: int = 2
+    feedback_timeout_s: float = 0.5
+    max_step_deg: float = 1.0
+    shared_can_teaching: bool = False
+    leader_control_offset: int = 0
+    follower_feedback_offset: int = 0

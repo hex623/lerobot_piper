@@ -48,7 +48,7 @@ dependencies = [
     "omegaconf>=2.3.0",
     "opencv-python>=4.9.0",
     "packaging>=24.2",
-    "pyav>=12.0.5",
+    "av>=12.0.5",
     "pymunk>=6.6.0",
     "pynput>=1.7.7",
     "pyzmq>=26.2.1",
@@ -61,6 +61,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+piper = ["piper_sdk==0.6.2", "python-can==4.6.1", "pygame>=2.6,<3"]
 aloha = ["gym-aloha>=0.1.1 ; python_version < '4.0'"]
 dev = ["pre-commit>=3.7.0", "debugpy>=1.8.1"]
 dora = ["gym-dora @ git+https://github.com/dora-rs/dora-lerobot.git#subdirectory=gym_dora ; python_version < '4.0'"]
